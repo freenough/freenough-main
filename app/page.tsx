@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-const LIFECOMPASS_URL = "/lifecompass";
-const BLOG_URL = "/lifecompass/blog";
-const ABOUT_URL = "/lifecompass/about";
+const ASSET_SIMULATOR_URL = "/asset-simulator";
+const BLOG_URL = "/asset-simulator/blog";
+const ABOUT_URL = "/asset-simulator/about";
 const X_URL = "https://x.com/freenough";
 const NOTE_URL = "https://note.com/freenough";
 
@@ -19,7 +19,7 @@ export default function Home() {
             NOUGH
           </span>
           <nav className="flex items-center gap-6 text-sm font-medium text-zinc-600">
-            <a href={LIFECOMPASS_URL} className="hover:text-black">
+            <a href={ASSET_SIMULATOR_URL} className="hover:text-black">
               資産シミュレーター
             </a>
             <a href={BLOG_URL} className="hover:text-black">
@@ -84,7 +84,7 @@ export default function Home() {
                 あなたの「足りる」を、数字で確かめる。
               </p>
               <a
-                href={LIFECOMPASS_URL}
+                href={ASSET_SIMULATOR_URL}
                 className="mt-5 inline-block rounded-lg bg-[#334155] px-8 py-4 text-base font-semibold text-white shadow transition-colors whitespace-nowrap hover:bg-[#293548]"
               >
                 資産シミュレーターを見る →
