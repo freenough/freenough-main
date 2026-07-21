@@ -20,7 +20,7 @@ export default function Home() {
           </span>
           <nav className="flex items-center gap-6 text-sm font-medium text-zinc-600">
             <a href={LIFECOMPASS_URL} className="hover:text-black">
-              LifeCompass
+              資産シミュレーター
             </a>
             <a href={BLOG_URL} className="hover:text-black">
               ブログ
@@ -72,22 +72,22 @@ export default function Home() {
               <div className="flex items-center justify-center gap-4">
                 <Image
                   src="/images/compass_logo.png"
-                  alt="LifeCompass"
+                  alt="資産シミュレーター"
                   width={72}
                   height={72}
                 />
                 <span className="text-2xl font-semibold text-black">
-                  LifeCompass
+                  資産シミュレーター
                 </span>
               </div>
               <p className="mt-3 text-base text-zinc-600">
-                あなたの「足りる」を、シミュレーションで確かめる。
+                あなたの「足りる」を、数字で確かめる。
               </p>
               <a
                 href={LIFECOMPASS_URL}
                 className="mt-5 inline-block rounded-lg bg-[#334155] px-8 py-4 text-base font-semibold text-white shadow transition-colors whitespace-nowrap hover:bg-[#293548]"
               >
-                LifeCompassを見る →
+                資産シミュレーターを見る →
               </a>
             </div>
           </section>
