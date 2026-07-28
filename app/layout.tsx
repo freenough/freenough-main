@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://freenough.com"),
+  metadataBase: new URL("https://www.freenough.com"),
   title: "FREENOUGH — Design Your Enough.",
   description:
     "あなたにとっての「足りる」を、数字で描く。FREENOUGHは、シミュレーションとデータを通じて、人生のお金の意思決定を支援するブランドです。",
