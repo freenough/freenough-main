@@ -1,7 +1,7 @@
 import Image from "next/image";
+import Header from "./components/Header";
 
 const ASSET_SIMULATOR_URL = "/asset-simulator";
-const BLOG_URL = "/asset-simulator/blog";
 const ABOUT_URL = "/asset-simulator/about";
 const X_URL = "https://x.com/freenough";
 const NOTE_URL = "https://note.com/freenough";
@@ -9,39 +9,16 @@ const NOTE_URL = "https://note.com/freenough";
 export default function Home() {
   return (
     <div className="flex flex-col bg-white">
-      <header className="w-full border-b border-black/5">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <span className="text-lg font-bold tracking-tight text-black">
-            FRE
-            <span className="underline decoration-2 underline-offset-4 decoration-[#3F9C6D]">
-              E
-            </span>
-            NOUGH
-          </span>
-          <nav className="flex items-center gap-6 text-sm font-medium text-zinc-600">
-            <a href={ASSET_SIMULATOR_URL} className="hover:text-black">
-              資産シミュレーター
-            </a>
-            <a href={BLOG_URL} className="hover:text-black">
-              ブログ
-            </a>
-            <a
-              href={NOTE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-black"
-            >
-              Note
-            </a>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <main className="flex flex-col items-center">
         <div className="mx-auto w-full max-w-7xl px-6">
           <section className="py-16 text-center">
             <div className="mx-auto max-w-5xl">
-              <h1 className="text-5xl font-bold leading-tight tracking-tight text-black sm:text-6xl">
+              <h1
+                className="text-balance font-bold leading-tight tracking-tight text-black"
+                style={{ fontSize: "clamp(2.25rem, 8vw, 3.75rem)" }}
+              >
                 あなたにとっての「足りる」を、
                 <br />
                 数字で描く。
@@ -50,16 +27,16 @@ export default function Home() {
           </section>
 
           <section className="-mx-6 bg-slate-50 px-6 py-12">
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="text-base leading-relaxed text-zinc-700">
+            <div className="mx-auto flex max-w-2xl flex-col gap-4 text-base leading-relaxed text-zinc-700">
+              <p className="text-left sm:text-center">
                 人生に必要なお金も、理想の働き方も、人それぞれです。
-                <br />
-                <br />
+              </p>
+              <p className="text-left sm:text-center">
                 大切なのは、誰かの正解を追いかけることではなく、
                 <br />
                 自分にとって「足りる(Enough)」を知ること。
-                <br />
-                <br />
+              </p>
+              <p className="text-left sm:text-center">
                 Freenoughは、その「足りる」を、
                 <br />
                 体験談ではなく、数字で描く場所です。
