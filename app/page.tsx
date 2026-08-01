@@ -3,6 +3,9 @@ import Header from "./components/Header";
 
 const ASSET_SIMULATOR_URL = "/asset-simulator";
 const ABOUT_URL = "/asset-simulator/about";
+const DISCLOSURE_URL = "/asset-simulator/disclosure";
+const PRIVACY_POLICY_URL = "/asset-simulator/privacy-policy";
+const DISCLAIMER_URL = "/asset-simulator/disclaimer";
 const X_URL = "https://x.com/freenough";
 const NOTE_URL = "https://note.com/freenough";
 
@@ -72,9 +75,18 @@ export default function Home() {
       </main>
 
       <footer className="w-full border-t border-black/5 bg-slate-50 py-8">
-        <nav className="flex items-center justify-center gap-6 text-sm text-zinc-600">
+        <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-zinc-600">
           <a href={ABOUT_URL} className="hover:text-black">
             About
+          </a>
+          <a href={DISCLOSURE_URL} className="hover:text-black">
+            広告開示
+          </a>
+          <a href={PRIVACY_POLICY_URL} className="hover:text-black">
+            プライバシーポリシー
+          </a>
+          <a href={DISCLAIMER_URL} className="hover:text-black">
+            免責事項
           </a>
           <a
             href={X_URL}
