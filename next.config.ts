@@ -13,6 +13,16 @@ const nextConfig: NextConfig = {
         destination:
           "https://freenough-lifecompass.vercel.app/asset-simulator/:path*",
       },
+      {
+        source: "/hitori-hojin",
+        destination:
+          "https://freenough-lifecompass.vercel.app/asset-simulator/hitori-hojin",
+      },
+      {
+        source: "/hitori-hojin/:path*",
+        destination:
+          "https://freenough-lifecompass.vercel.app/asset-simulator/hitori-hojin/:path*",
+      },
       // 旧パス(/lifecompass)は削除せず維持する。lifecompass-next側の新basePath
       // (/asset-simulator)デプロイ後もnote等に残る旧URLへのアクセスをここで
       // lifecompass-nextまで到達させ、lifecompass-next自身のredirects()による
