@@ -4,12 +4,14 @@ import { useState } from "react";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 
 const ASSET_SIMULATOR_URL = "/asset-simulator";
+const HITORI_HOJIN_URL = "/hitori-hojin";
 const BLOG_URL = "/asset-simulator/blog";
 const TOOLS_URL = "/asset-simulator/tools";
 const NOTE_URL = "https://note.com/freenough";
 
 const NAV_ITEMS = [
   { label: "シミュレーター", href: ASSET_SIMULATOR_URL },
+  { label: "一人法人", href: HITORI_HOJIN_URL },
   { label: "ブログ", href: BLOG_URL },
   { label: "ツール", href: TOOLS_URL },
   { label: "Note", href: NOTE_URL, external: true },
@@ -22,13 +24,13 @@ export default function Header() {
     <>
       <header className="relative z-20 w-full border-b border-black/5 bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <span className="text-lg font-bold tracking-tight text-black">
+          <a href="/" className="text-lg font-bold tracking-tight text-black">
             FRE
             <span className="underline decoration-2 underline-offset-4 decoration-[#3F9C6D]">
               E
             </span>
             NOUGH
-          </span>
+          </a>
 
           <nav className="hidden items-center gap-6 text-sm font-medium text-zinc-600 lg:flex">
             {NAV_ITEMS.map((item) => (
