@@ -1,15 +1,10 @@
 import Image from "next/image";
 import { IconBuilding } from "@tabler/icons-react";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 const ASSET_SIMULATOR_URL = "/asset-simulator";
 const HITORI_HOJIN_URL = "/hitori-hojin";
-const ABOUT_URL = "/asset-simulator/about";
-const DISCLOSURE_URL = "/asset-simulator/disclosure";
-const PRIVACY_POLICY_URL = "/asset-simulator/privacy-policy";
-const DISCLAIMER_URL = "/asset-simulator/disclaimer";
-const X_URL = "https://x.com/freenough";
-const NOTE_URL = "https://note.com/freenough";
 
 export default function Home() {
   return (
@@ -98,41 +93,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="w-full border-t border-black/5 bg-slate-50 py-8">
-        <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-zinc-600">
-          <a href={ABOUT_URL} className="hover:text-black">
-            About
-          </a>
-          <a href={DISCLOSURE_URL} className="hover:text-black">
-            広告開示
-          </a>
-          <a href={PRIVACY_POLICY_URL} className="hover:text-black">
-            プライバシーポリシー
-          </a>
-          <a href={DISCLAIMER_URL} className="hover:text-black">
-            免責事項
-          </a>
-          <a
-            href={X_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-black"
-          >
-            X
-          </a>
-          <a
-            href={NOTE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-black"
-          >
-            Note
-          </a>
-        </nav>
-        <p className="mt-3 text-center text-xs text-zinc-500">
-          © 2026 FREENOUGH — Design Your Enough.
-        </p>
-      </footer>
+      <Footer />
     </div>
   );
 }
