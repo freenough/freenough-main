@@ -36,6 +36,7 @@ export default function Footer() {
           <a href={ASSET_MANAGEMENT_URL} className="hover:text-slate-700">資産管理ツール</a>
           <a href="/asset-simulator/guide" className="hover:text-slate-700">使い方ガイド</a>
           <a href="/asset-simulator/methodology" className="hover:text-slate-700">計算ロジック</a>
+          <a href="https://x.com/freenough" target="_blank" rel="noopener noreferrer" className="hover:text-slate-700">X</a>
           <a href="https://note.com/freenough" target="_blank" rel="noopener noreferrer" className="hover:text-slate-700">Note</a>
         </nav>
 
