@@ -10,8 +10,11 @@ export default function Footer() {
   return (
     <footer className="mt-16 border-t border-slate-200 bg-slate-50 pt-8 pb-6 text-xs text-slate-500 sm:pt-10 sm:pb-8 sm:text-sm">
       <div className="mx-auto max-w-7xl px-4">
-        {/* ①2カラムのコンテンツ列。モバイルでも2カラムのまま、フォント・余白のみ圧縮する */}
-        <div className="grid grid-cols-2 gap-4 border-b border-slate-200 pb-5 sm:gap-16 sm:pb-8">
+        {/* ①2カラムのコンテンツ列。モバイルでも2カラムのまま、フォント・余白のみ圧縮する。
+            grid-cols-2だとコンテナ幅いっぱいに列が引き伸ばされ②③と横幅が揃わないため、
+            flex justify-centerに統一。ただしflex-wrapのままだと狭い画面で縦積みになるため
+            flex-nowrapを明示指定する（instruction_freenough_footer_layout_fix.md） */}
+        <div className="flex flex-nowrap justify-center gap-8 border-b border-slate-200 pb-5 sm:gap-16 sm:pb-8">
           <div>
             <p className="mb-2 text-[11px] font-semibold text-slate-400 sm:mb-3 sm:text-xs">FIREを考える</p>
             <ul className="space-y-1.5 sm:space-y-2">
