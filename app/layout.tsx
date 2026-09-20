@@ -20,6 +20,16 @@ export const metadata: Metadata = {
     "あなたにとっての「足りる」を、数字で描く。FREENOUGHは、シミュレーションとデータを通じて、人生のお金の意思決定を支援するブランドです。",
 };
 
+// サイト全体のJSON-LD（Organization）。個人著者は立てず、freenoughブランドのOrganizationのみで
+// 構造化データを実装する方針（docs/fixes/active/claude_instruction_structured_data_implementation_v2.md）。
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "freenough",
+  url: "https://www.freenough.com",
+  sameAs: ["https://x.com/freenough", "https://note.com/freenough"],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -31,6 +41,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
       <body className="bg-slate-50">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         {children}
         <Script
           async
