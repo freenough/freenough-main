@@ -27,6 +27,7 @@ const organizationJsonLd = {
   "@type": "Organization",
   name: "freenough",
   url: "https://www.freenough.com",
+  logo: "https://www.freenough.com/images/compass_logo.png",
   sameAs: ["https://x.com/freenough", "https://note.com/freenough"],
 };
 
