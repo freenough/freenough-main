@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import AnalyticsScripts from "@/app/components/AnalyticsScripts";
+import { ADSENSE_CLIENT_ID, IS_PRODUCTION_BUILD } from "@/app/lib/analytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +29,7 @@ const organizationJsonLd = {
   "@type": "Organization",
   name: "freenough",
   url: "https://www.freenough.com",
+  logo: "https://www.freenough.com/images/compass_logo.png",
   sameAs: ["https://x.com/freenough", "https://note.com/freenough"],
 };
 
@@ -46,24 +49,17 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         {children}
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1493291567641534"
-          crossOrigin="anonymous"
-          strategy="beforeInteractive"
-        />
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-KQNTWNKPJ7"
-          strategy="afterInteractive"
-        />
-        <Script id="ga4-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-KQNTWNKPJ7');
-          `}
-        </Script>
+        {/* AdSenseは本番ビルドのときだけ（ホスト名では絞らない）。サーバーが返すHTMLに含まれる
+            beforeInteractiveのまま。GA4は本番ビルドかつ本番ドメインのときだけ（ホスト名はクライアント側で判定）。 */}
+        {IS_PRODUCTION_BUILD && (
+          <Script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`}
+            crossOrigin="anonymous"
+            strategy="beforeInteractive"
+          />
+        )}
+        <AnalyticsScripts />
       </body>
     </html>
   );
