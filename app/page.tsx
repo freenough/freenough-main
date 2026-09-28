@@ -24,15 +24,18 @@ const PILLARS = [
     lead: ["あなたの", "「足りる」を、", "数字で", "確かめる。"],
     body: ["将来の", "資産推移を、", "FIRE達成・", "資産寿命・", "モンテカルロ破綻率まで", "含めて", "シミュレーションできます。"],
     cta: "資産シミュレーターを見る →",
+    ctaClass: PRIMARY_BUTTON_CLASS,
     href: ASSET_SIMULATOR_URL,
     image: {
       src: "/images/top/hero-demo.png",
       width: 1040,
       height: 849,
       alt: "資産シミュレーターの画面例。FIRE達成・資産寿命・MC破綻率の3つの指標と、資産推移のチャート",
-      // HeroDemoのカード装飾（rounded shadow-2xl。border-slate-200は画像に含まれる）
-      className: "rounded shadow-2xl",
+      // キャプチャ画像自体がHeroDemoのカード（白背景・border-slate-200・px-6 pt-6 pb-1）を含むため、
+      // 角丸だけを付ける（影はTOPでは付けない）
+      className: "rounded",
     },
+    cardClass: "",
   },
   {
     no: "02",
@@ -40,6 +43,8 @@ const PILLARS = [
     lead: ["完全リタイアだけが", "FIREじゃない。"],
     body: ["会社員と", "完全リタイアの", "間にある", "一人法人という", "選択肢を、", "税金や", "社会保険、", "法人と", "個人の", "お金の", "分け方まで", "含めて、", "FIREの", "視点から", "整理します。"],
     cta: "一人法人という選択肢を見る →",
+    // Heroの同じボタンと同じセカンダリ（白抜き）
+    ctaClass: SECONDARY_BUTTON_CLASS,
     href: HITORI_HOJIN_URL,
     image: {
       src: "/images/top/hitori-hojin-fork.png",
@@ -48,6 +53,9 @@ const PILLARS = [
       alt: "会社員と完全リタイアを結ぶ線の途中から分かれた道の先に、一人法人がある図",
       className: "",
     },
+    // 透過PNGを、資産シミュレーター側の画像に写っているHeroDemoのカードと同じ値
+    // （lifecompass-next HeroDemo.tsx L156：bg-white rounded border border-slate-200 px-6 pt-6 pb-1）で包む
+    cardClass: "rounded border border-slate-200 bg-white px-6 pt-6 pb-1",
   },
 ];
 
@@ -58,6 +66,17 @@ function PhraseText({ phrases }: { phrases: string[] }) {
       {phrase}
     </Fragment>
   ));
+}
+
+// セクションのラベル（線＋テキスト）。書式はlifecompass-nextのSectionHeading.tsx（L39-43）・
+// SectionRule.tsx（L8）と同じで、色だけTOP用に線をロゴ下線と同じ緑、テキストを見出しと同じ黒にしている。
+function SectionLabel({ children, className = "" }: { children: string; className?: string }) {
+  return (
+    <div className={`flex items-center gap-3 ${className}`}>
+      <span className="h-0.5 w-6 bg-[#3F9C6D]" aria-hidden="true" />
+      <span className="text-sm font-medium text-black">{children}</span>
+    </div>
+  );
 }
 
 export default function Home() {
@@ -102,6 +121,8 @@ export default function Home() {
               （w-screen=100vwはWindowsのスクロールバー幅を含み横スクロールを生むため使わない） */}
           <section className="-mx-6 bg-slate-50 px-6 py-9 shadow-[0_0_0_100vmax_var(--color-slate-50)] [clip-path:inset(0_-100vmax)]">
             <div className="mx-auto flex max-w-2xl flex-col gap-4 break-keep text-base leading-relaxed text-zinc-700">
+              {/* 本文が中央揃えのため、ラベルも中央揃え。本文との間隔は段落間と同じgap-4 */}
+              <SectionLabel className="justify-center">MESSAGE</SectionLabel>
               <p className="text-left sm:text-center">
                 人生に必要なお金も、理想の働き方も、<span className="whitespace-nowrap">人それぞれです。</span>
               </p>
@@ -118,8 +139,11 @@ export default function Home() {
             </div>
           </section>
 
-          {/* 2本柱：縦に2ブロック積み、各ブロックは左テキスト・右図。800px未満は1列で図をテキストの上に置く */}
-          <section className="space-y-16 py-16 sm:space-y-20">
+          {/* 2本柱：縦に2ブロック積み、各ブロックは左テキスト・右図。800px未満は1列で図をテキストの上に置く。
+              ラベル下の余白はLPのSectionHeading全体の下余白（mb-10）と同じ */}
+          <section className="py-16">
+            <SectionLabel className="mb-10">SERVICES</SectionLabel>
+            <div className="space-y-16 sm:space-y-20">
             {PILLARS.map((pillar) => (
               <div
                 key={pillar.no}
@@ -127,7 +151,7 @@ export default function Home() {
               >
                 <div className="order-2 min-[800px]:order-1">
                   <p
-                    className="font-bold leading-none tracking-tight text-[#3F9C6D]"
+                    className="font-bold leading-none tracking-tight text-black"
                     style={{ fontSize: "clamp(30px, 4vw, 40px)" }}
                   >
                     {pillar.no}
@@ -140,11 +164,11 @@ export default function Home() {
                     <br />
                     <PhraseText phrases={pillar.body} />
                   </p>
-                  <a href={pillar.href} className={`mt-6 ${PRIMARY_BUTTON_CLASS}`}>
+                  <a href={pillar.href} className={`mt-6 ${pillar.ctaClass}`}>
                     {pillar.cta}
                   </a>
                 </div>
-                <div className="order-1 mx-auto w-full max-w-[520px] min-[800px]:order-2">
+                <div className={`order-1 mx-auto w-full max-w-[520px] min-[800px]:order-2 ${pillar.cardClass}`}>
                   <Image
                     src={pillar.image.src}
                     width={pillar.image.width}
@@ -155,6 +179,7 @@ export default function Home() {
                 </div>
               </div>
             ))}
+            </div>
           </section>
         </div>
       </main>
