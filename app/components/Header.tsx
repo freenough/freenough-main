@@ -5,16 +5,11 @@ import { IconMenu2, IconX } from "@tabler/icons-react";
 
 const ASSET_SIMULATOR_URL = "/asset-simulator";
 const HITORI_HOJIN_URL = "/hitori-hojin";
-const BLOG_URL = "/asset-simulator/blog";
-const TOOLS_URL = "/asset-simulator/tools";
-const NOTE_URL = "https://note.com/freenough";
 
+// ブログ・ツール・Noteはフッターに導線があるため、ヘッダーは2本柱のみ（implementation_top_hero_refresh.md 3.2）
 const NAV_ITEMS = [
-  { label: "シミュレーター", href: ASSET_SIMULATOR_URL },
+  { label: "資産シミュレーター", href: ASSET_SIMULATOR_URL },
   { label: "一人法人", href: HITORI_HOJIN_URL },
-  { label: "ブログ", href: BLOG_URL },
-  { label: "ツール", href: TOOLS_URL },
-  { label: "Note", href: NOTE_URL, external: true },
 ];
 
 export default function Header() {
@@ -23,7 +18,7 @@ export default function Header() {
   return (
     <>
       <header className="relative z-20 w-full border-b border-black/5 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+        <div className="mx-auto flex max-w-[72rem] items-center justify-between px-6 py-3">
           <a href="/" className="text-lg font-bold tracking-tight text-black">
             FRE
             <span className="underline decoration-2 underline-offset-4 decoration-[#3F9C6D]">
@@ -37,8 +32,6 @@ export default function Header() {
               <a
                 key={item.label}
                 href={item.href}
-                target={item.external ? "_blank" : undefined}
-                rel={item.external ? "noopener noreferrer" : undefined}
                 className="hover:text-black"
               >
                 {item.label}
@@ -66,8 +59,6 @@ export default function Header() {
               <a
                 key={item.label}
                 href={item.href}
-                target={item.external ? "_blank" : undefined}
-                rel={item.external ? "noopener noreferrer" : undefined}
                 className="rounded px-2 py-2 hover:bg-black/5 hover:text-black"
                 onClick={() => setMenuOpen(false)}
               >
