@@ -1,10 +1,64 @@
+import { Fragment } from "react";
 import Image from "next/image";
-import { IconBuilding } from "@tabler/icons-react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 const ASSET_SIMULATOR_URL = "/asset-simulator";
 const HITORI_HOJIN_URL = "/hitori-hojin";
+
+// CTAボタンは資産シミュレーター・一人法人LPのCTA（lifecompass-next src/app/page.tsx L239等）と同じクラス。
+// セカンダリ（アウトライン）はLP側に同種のボタンがないため、同じhover挙動に枠線を足したもの。
+// 枠線1px×2の分だけpy-[15px]にして、プライマリと同じ高さ56pxにする。
+const PRIMARY_BUTTON_CLASS =
+  "inline-block rounded bg-[#334155] px-8 py-4 text-base font-semibold text-white shadow transition-all duration-150 ease-out whitespace-nowrap hover:-translate-y-0.5 hover:shadow-lg";
+const SECONDARY_BUTTON_CLASS =
+  "inline-block rounded border border-[#334155] bg-transparent px-8 py-[15px] text-base font-semibold text-[#334155] shadow transition-all duration-150 ease-out whitespace-nowrap hover:-translate-y-0.5 hover:shadow-lg";
+
+// 2本柱ブロックの右側の図は、lifecompass-nextのLPに実際に描画されたHeroDemo・HitoriHojinForkDiagramを
+// 2倍解像度でキャプチャした静止画（別リポジトリのためコンポーネントは共有できない）。
+// LP側の見た目・数値が変わった場合は撮り直す。
+const PILLARS = [
+  {
+    no: "01",
+    title: "資産シミュレーター",
+    lead: ["あなたの", "「足りる」を、", "数字で", "確かめる。"],
+    body: ["将来の", "資産推移を、", "FIRE達成・", "資産寿命・", "モンテカルロ破綻率まで", "含めて", "シミュレーションできます。"],
+    cta: "資産シミュレーターを見る →",
+    href: ASSET_SIMULATOR_URL,
+    image: {
+      src: "/images/top/hero-demo.png",
+      width: 1040,
+      height: 849,
+      alt: "資産シミュレーターの画面例。FIRE達成・資産寿命・MC破綻率の3つの指標と、資産推移のチャート",
+      // HeroDemoのカード装飾（rounded shadow-2xl。border-slate-200は画像に含まれる）
+      className: "rounded shadow-2xl",
+    },
+  },
+  {
+    no: "02",
+    title: "一人法人",
+    lead: ["完全リタイアだけが", "FIREじゃない。"],
+    body: ["会社員と", "完全リタイアの", "間にある", "一人法人という", "選択肢を、", "税金や", "社会保険、", "法人と", "個人の", "お金の", "分け方まで", "含めて、", "FIREの", "視点から", "整理します。"],
+    cta: "一人法人という選択肢を見る →",
+    href: HITORI_HOJIN_URL,
+    image: {
+      src: "/images/top/hitori-hojin-fork.png",
+      width: 1040,
+      height: 832,
+      alt: "会社員と完全リタイアを結ぶ線の途中から分かれた道の先に、一人法人がある図",
+      className: "",
+    },
+  },
+];
+
+function PhraseText({ phrases }: { phrases: string[] }) {
+  return phrases.map((phrase, i) => (
+    <Fragment key={i}>
+      {i > 0 && <wbr />}
+      {phrase}
+    </Fragment>
+  ));
+}
 
 export default function Home() {
   return (
@@ -32,18 +86,11 @@ export default function Home() {
               <p className="mt-6 text-base leading-relaxed text-zinc-700">
                 <span className="whitespace-nowrap">将来のお金と働き方を、</span><span className="whitespace-nowrap">シミュレーションで確かめる場所。</span>
               </p>
-              {/* 両ボタンともpy-[15px]＋枠線1px×2で、2本柱ブロックのボタン（py-4・枠線なし）と同じ高さ56pxにする */}
               <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <a
-                  href={ASSET_SIMULATOR_URL}
-                  className="inline-block rounded-lg border border-[#334155] bg-[#334155] px-8 py-[15px] text-base font-semibold text-white shadow transition-colors whitespace-nowrap hover:bg-[#293548]"
-                >
+                <a href={ASSET_SIMULATOR_URL} className={PRIMARY_BUTTON_CLASS}>
                   資産シミュレーターを見る →
                 </a>
-                <a
-                  href={HITORI_HOJIN_URL}
-                  className="inline-block rounded-lg border border-[#334155] bg-transparent px-8 py-[15px] text-base font-semibold text-[#334155] transition-colors whitespace-nowrap hover:bg-[#334155]/5"
-                >
+                <a href={HITORI_HOJIN_URL} className={SECONDARY_BUTTON_CLASS}>
                   一人法人という選択肢を見る →
                 </a>
               </div>
@@ -71,51 +118,43 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="py-12">
-            <div className="mx-auto grid max-w-5xl gap-10 text-center sm:grid-cols-2">
-              <div>
-                <div className="flex items-center justify-center gap-4">
+          {/* 2本柱：縦に2ブロック積み、各ブロックは左テキスト・右図。800px未満は1列で図をテキストの上に置く */}
+          <section className="space-y-16 py-16 sm:space-y-20">
+            {PILLARS.map((pillar) => (
+              <div
+                key={pillar.no}
+                className="grid items-center gap-8 min-[800px]:grid-cols-2 min-[800px]:gap-12"
+              >
+                <div className="order-2 min-[800px]:order-1">
+                  <p
+                    className="font-bold leading-none tracking-tight text-[#3F9C6D]"
+                    style={{ fontSize: "clamp(30px, 4vw, 40px)" }}
+                  >
+                    {pillar.no}
+                  </p>
+                  <h2 className="mt-3 text-2xl font-bold text-black sm:text-3xl">{pillar.title}</h2>
+                  {/* 文節ごとに<wbr />を入れ、keep-allでその位置だけで折り返させる（一人法人LPのPhraseBreakと同じ方式。
+                      overflow-wrap:anywhereは長すぎる文節の保険） */}
+                  <p className="mt-4 text-base leading-relaxed text-zinc-700 [line-break:strict] [word-break:keep-all] [overflow-wrap:anywhere]">
+                    <PhraseText phrases={pillar.lead} />
+                    <br />
+                    <PhraseText phrases={pillar.body} />
+                  </p>
+                  <a href={pillar.href} className={`mt-6 ${PRIMARY_BUTTON_CLASS}`}>
+                    {pillar.cta}
+                  </a>
+                </div>
+                <div className="order-1 mx-auto w-full max-w-[520px] min-[800px]:order-2">
                   <Image
-                    src="/images/compass_logo.png"
-                    alt="資産シミュレーター"
-                    width={72}
-                    height={72}
+                    src={pillar.image.src}
+                    width={pillar.image.width}
+                    height={pillar.image.height}
+                    alt={pillar.image.alt}
+                    className={`h-auto w-full ${pillar.image.className}`}
                   />
-                  <span className="text-2xl font-semibold text-black">
-                    資産シミュレーター
-                  </span>
                 </div>
-                <p className="mt-3 text-base text-zinc-600">
-                  あなたの「足りる」を、数字で確かめる。
-                </p>
-                <a
-                  href={ASSET_SIMULATOR_URL}
-                  className="mt-5 inline-block rounded-lg bg-[#334155] px-8 py-4 text-base font-semibold text-white shadow transition-colors whitespace-nowrap hover:bg-[#293548]"
-                >
-                  資産シミュレーターを見る →
-                </a>
               </div>
-
-              {/* アイコン・コピーは仮置き（instruction_freenough_hierarchy_navigation.md
-                  スコープ外、最終デザインは別途詰める） */}
-              <div>
-                <div className="flex items-center justify-center gap-4">
-                  <IconBuilding size={72} className="text-[#334155]" stroke={1.5} />
-                  <span className="text-2xl font-semibold text-black">
-                    一人法人
-                  </span>
-                </div>
-                <p className="mt-3 text-base text-zinc-600">
-                  完全リタイアだけがFIREじゃない。
-                </p>
-                <a
-                  href={HITORI_HOJIN_URL}
-                  className="mt-5 inline-block rounded-lg bg-[#334155] px-8 py-4 text-base font-semibold text-white shadow transition-colors whitespace-nowrap hover:bg-[#293548]"
-                >
-                  一人法人という選択肢を見る →
-                </a>
-              </div>
-            </div>
+            ))}
           </section>
         </div>
       </main>
