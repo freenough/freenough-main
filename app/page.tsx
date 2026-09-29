@@ -59,6 +59,11 @@ const PILLARS = [
   },
 ];
 
+const MESSAGE_PARAGRAPHS = [
+  ["人生に", "必要な", "お金も、", "理想の", "働き方も、", "人それぞれです。", "大切なのは、", "誰かの", "正解を", "追いかける", "ことではなく、", "自分にとって", "「足りる(Enough)」を", "知ること。"],
+  ["Freenoughは、", "その", "「足りる」を、", "体験談ではなく、", "数字で", "描く", "場所です。"],
+];
+
 function PhraseText({ phrases }: { phrases: string[] }) {
   return phrases.map((phrase, i) => (
     <Fragment key={i}>
@@ -69,12 +74,12 @@ function PhraseText({ phrases }: { phrases: string[] }) {
 }
 
 // セクションのラベル（線＋テキスト）。書式はlifecompass-nextのSectionHeading.tsx（L39-43）・
-// SectionRule.tsx（L8）と同じで、色だけTOP用に線をロゴ下線と同じ緑、テキストを見出しと同じ黒にしている。
+// SectionRule.tsx（L8）と同じで、色だけTOP用に線・テキストともロゴ下線と同じ緑にしている（試験的）。
 function SectionLabel({ children, className = "" }: { children: string; className?: string }) {
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       <span className="h-0.5 w-6 bg-[#3F9C6D]" aria-hidden="true" />
-      <span className="text-sm font-medium text-black">{children}</span>
+      <span className="text-sm font-medium text-[#3F9C6D]">{children}</span>
     </div>
   );
 }
@@ -87,16 +92,21 @@ export default function Home() {
       <main className="flex flex-col items-center">
         {/* 外側コンテナはlifecompass-nextの--lp-container-width(72rem)に合わせる */}
         <div className="mx-auto w-full max-w-[72rem] px-6">
-          <section className="py-16 text-center">
-            <div className="mx-auto max-w-5xl">
+          <section className="pt-28 pb-16 text-center">
+            {/* 見出しの文字サイズをこの要素の幅（cqi）基準にするためのコンテナ。vwはスクロールバーを含む
+                画面幅で決まり、スクロールバーが幅を取る環境で本文幅とずれるため使わない */}
+            <div className="@container">
               <p className="font-mono text-xs tracking-widest text-zinc-500 sm:text-sm">
                 FRE<span className="text-[#3F9C6D]">E</span> + <span className="text-[#3F9C6D]">E</span>NOUGH.
               </p>
               {/* 2つのnowrap塊の間でだけ改行させる。幅が足りれば2行、足りなければ
-                  「あなたにとっての」／「「足りる」を、」／「数字で描く。」の3行になる */}
+                  「あなたにとっての」／「「足りる」を、」／「数字で描く。」の3行になる。
+                  上限4.5rem（72px）は、1440px幅で1行目が本文コンテナ（1152px）の90%以上になる大きさ。
+                  中央値6.6cqiは、1行目（文字サイズの約14.6倍の幅）がコンテナ幅の約96.5%に収まり、
+                  15px以上の余りを残して2行になるように決めた値 */}
               <h1
                 className="mt-4 text-balance font-bold leading-tight tracking-tight text-black"
-                style={{ fontSize: "clamp(2.25rem, 8vw, 3.75rem)" }}
+                style={{ fontSize: "clamp(2.25rem, 6.6cqi, 4.5rem)" }}
               >
                 <span className="whitespace-nowrap">あなたにとっての</span><span className="whitespace-nowrap">「足りる」を、</span>
                 <br />
@@ -116,26 +126,18 @@ export default function Home() {
             </div>
           </section>
 
-          {/* <br>は640px未満で無効化し自然な折り返しに任せる。break-keepで語の途中での改行を防ぐ。
-              帯の背景はbox-shadowで画面幅いっぱいに広げ、clip-pathで上下のはみ出しだけ切る
-              （w-screen=100vwはWindowsのスクロールバー幅を含み横スクロールを生むため使わない） */}
+          {/* 帯の背景はbox-shadowで画面幅いっぱいに広げ、clip-pathで上下のはみ出しだけ切る
+              （w-screen=100vwはWindowsのスクロールバー幅を含み横スクロールを生むため使わない）。
+              SERVICESと同じ左揃え。本文は読みやすい行長（1行42字前後）に収めるためmax-w-2xlのまま */}
           <section className="-mx-6 bg-slate-50 px-6 py-9 shadow-[0_0_0_100vmax_var(--color-slate-50)] [clip-path:inset(0_-100vmax)]">
-            <div className="mx-auto flex max-w-2xl flex-col gap-4 break-keep text-base leading-relaxed text-zinc-700">
-              {/* 本文が中央揃えのため、ラベルも中央揃え。本文との間隔は段落間と同じgap-4 */}
-              <SectionLabel className="justify-center">MESSAGE</SectionLabel>
-              <p className="text-left sm:text-center">
-                人生に必要なお金も、理想の働き方も、<span className="whitespace-nowrap">人それぞれです。</span>
-              </p>
-              <p className="text-left sm:text-center">
-                大切なのは、誰かの正解を追いかけることではなく、
-                <br className="max-sm:hidden" />
-                自分にとって<span className="whitespace-nowrap">「足りる(Enough)」を知ること。</span>
-              </p>
-              <p className="text-left sm:text-center">
-                Freenoughは、その「足りる」を、
-                <br className="max-sm:hidden" />
-                体験談ではなく、数字で描く場所です。
-              </p>
+            <div className="flex max-w-2xl flex-col gap-4 text-base leading-relaxed text-zinc-700">
+              <SectionLabel>MESSAGE</SectionLabel>
+              {/* 2本柱の説明文と同じく、文節ごとの<wbr />＋keep-allで文節の区切りでだけ折り返す */}
+              {MESSAGE_PARAGRAPHS.map((phrases, i) => (
+                <p key={i} className="[line-break:strict] [word-break:keep-all] [overflow-wrap:anywhere]">
+                  <PhraseText phrases={phrases} />
+                </p>
+              ))}
             </div>
           </section>
 
@@ -156,7 +158,8 @@ export default function Home() {
                   >
                     {pillar.no}
                   </p>
-                  <h2 className="mt-3 text-2xl font-bold text-black sm:text-3xl">{pillar.title}</h2>
+                  {/* 01/02の数字（clamp(30px, 4vw, 40px)）より常に一回り大きくし、数字に埋もれないようにする */}
+                  <h2 className="mt-3 text-[2rem] font-bold text-black sm:text-4xl lg:text-5xl">{pillar.title}</h2>
                   {/* 文節ごとに<wbr />を入れ、keep-allでその位置だけで折り返させる（一人法人LPのPhraseBreakと同じ方式。
                       overflow-wrap:anywhereは長すぎる文節の保険） */}
                   <p className="mt-4 text-base leading-relaxed text-zinc-700 [line-break:strict] [word-break:keep-all] [overflow-wrap:anywhere]">
