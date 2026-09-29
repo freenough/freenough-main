@@ -9,10 +9,12 @@ const HITORI_HOJIN_URL = "/hitori-hojin";
 // CTAボタンは資産シミュレーター・一人法人LPのCTA（lifecompass-next src/app/page.tsx L239等）と同じクラス。
 // セカンダリ（アウトライン）はLP側に同種のボタンがないため、同じhover挙動に枠線を足したもの。
 // 枠線1px×2の分だけpy-[15px]にして、プライマリと同じ高さ56pxにする。
+// min-w-[19rem]（304px）は、文言の長い「一人法人という選択肢を見る →」（内容幅約295px）に合わせて
+// 4つのボタンの幅を揃えるための最小幅。375px幅の本文（327px）にも収まる。
 const PRIMARY_BUTTON_CLASS =
-  "inline-block rounded bg-[#334155] px-8 py-4 text-base font-semibold text-white shadow transition-all duration-150 ease-out whitespace-nowrap hover:-translate-y-0.5 hover:shadow-lg";
+  "inline-block min-w-[19rem] rounded bg-[#334155] px-8 py-4 text-center text-base font-semibold text-white shadow transition-all duration-150 ease-out whitespace-nowrap hover:-translate-y-0.5 hover:shadow-lg";
 const SECONDARY_BUTTON_CLASS =
-  "inline-block rounded border border-[#334155] bg-transparent px-8 py-[15px] text-base font-semibold text-[#334155] shadow transition-all duration-150 ease-out whitespace-nowrap hover:-translate-y-0.5 hover:shadow-lg";
+  "inline-block min-w-[19rem] rounded border border-[#334155] bg-transparent px-8 py-[15px] text-center text-base font-semibold text-[#334155] shadow transition-all duration-150 ease-out whitespace-nowrap hover:-translate-y-0.5 hover:shadow-lg";
 
 // 2本柱ブロックの右側の図は、lifecompass-nextのLPに実際に描画されたHeroDemo・HitoriHojinForkDiagramを
 // 2倍解像度でキャプチャした静止画（別リポジトリのためコンポーネントは共有できない）。
@@ -47,13 +49,14 @@ const PILLARS = [
     ctaClass: SECONDARY_BUTTON_CLASS,
     href: HITORI_HOJIN_URL,
     image: {
-      src: "/images/top/hitori-hojin-fork.png",
+      src: "/images/top/hitori-hojin-fork-cropped.png",
       width: 1040,
-      height: 832,
+      // キャプチャ（1040×832）から、図の上の空白（170px）と下の空白の一部を切り落としたもの
+      height: 639,
       alt: "会社員と完全リタイアを結ぶ線の途中から分かれた道の先に、一人法人がある図",
       className: "",
     },
-    // 透過PNGを、資産シミュレーター側の画像に写っているHeroDemoのカードと同じ値
+    // 白背景のPNGを、資産シミュレーター側の画像に写っているHeroDemoのカードと同じ値
     // （lifecompass-next HeroDemo.tsx L156：bg-white rounded border border-slate-200 px-6 pt-6 pb-1）で包む
     cardClass: "rounded border border-slate-200 bg-white px-6 pt-6 pb-1",
   },
@@ -103,10 +106,12 @@ export default function Home() {
                   「あなたにとっての」／「「足りる」を、」／「数字で描く。」の3行になる。
                   上限4.5rem（72px）は、1440px幅で1行目が本文コンテナ（1152px）の90%以上になる大きさ。
                   中央値6.6cqiは、1行目（文字サイズの約14.6倍の幅）がコンテナ幅の約96.5%に収まり、
-                  15px以上の余りを残して2行になるように決めた値 */}
+                  15px以上の余りを残して2行になるように決めた値。
+                  下限2.5rem（40px）は、最も長い塊「あなたにとっての」（文字サイズの約7.8倍＝312px）が
+                  375px・360px幅の本文（327px・312px）に収まる最大の大きさ */}
               <h1
                 className="mt-4 text-balance font-bold leading-tight tracking-tight text-black"
-                style={{ fontSize: "clamp(2.25rem, 6.6cqi, 4.5rem)" }}
+                style={{ fontSize: "clamp(2.5rem, 6.6cqi, 4.5rem)" }}
               >
                 <span className="whitespace-nowrap">あなたにとっての</span><span className="whitespace-nowrap">「足りる」を、</span>
                 <br />
@@ -141,17 +146,18 @@ export default function Home() {
             </div>
           </section>
 
-          {/* 2本柱：縦に2ブロック積み、各ブロックは左テキスト・右図。800px未満は1列で図をテキストの上に置く。
+          {/* 2本柱：縦に2ブロック積み、各ブロックは左テキスト・右図。800px未満は1列で、DOM順どおり
+              テキスト→図の順に並ぶ（読み上げ順とも一致）。左右は上下中央揃え（items-center）。
               ラベル下の余白はLPのSectionHeading全体の下余白（mb-10）と同じ */}
           <section className="py-16">
             <SectionLabel className="mb-10">SERVICES</SectionLabel>
-            <div className="space-y-16 sm:space-y-20">
+            <div className="space-y-10 sm:space-y-12">
             {PILLARS.map((pillar) => (
               <div
                 key={pillar.no}
                 className="grid items-center gap-8 min-[800px]:grid-cols-2 min-[800px]:gap-12"
               >
-                <div className="order-2 min-[800px]:order-1">
+                <div>
                   <p
                     className="font-bold leading-none tracking-tight text-black"
                     style={{ fontSize: "clamp(30px, 4vw, 40px)" }}
@@ -171,7 +177,7 @@ export default function Home() {
                     {pillar.cta}
                   </a>
                 </div>
-                <div className={`order-1 mx-auto w-full max-w-[520px] min-[800px]:order-2 ${pillar.cardClass}`}>
+                <div className={`mx-auto w-full max-w-[520px] ${pillar.cardClass}`}>
                   <Image
                     src={pillar.image.src}
                     width={pillar.image.width}
