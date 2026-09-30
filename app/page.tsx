@@ -31,11 +31,11 @@ const PILLARS = [
     image: {
       src: "/images/top/hero-demo.png",
       width: 1040,
-      height: 849,
+      height: 850,
       alt: "資産シミュレーターの画面例。FIRE達成・資産寿命・MC破綻率の3つの指標と、資産推移のチャート",
       // キャプチャ画像自体がHeroDemoのカード（白背景・border-slate-200・px-6 pt-6 pb-1）を含むため、
       // 角丸だけを付ける（影はTOPでは付けない）
-      className: "rounded",
+      className: "h-auto w-full rounded",
     },
     cardClass: "",
   },
@@ -54,11 +54,14 @@ const PILLARS = [
       // キャプチャ（1040×832）から、図の上の空白（170px）と下の空白の一部を切り落としたもの
       height: 639,
       alt: "会社員と完全リタイアを結ぶ線の途中から分かれた道の先に、一人法人がある図",
-      className: "",
+      // カードの中に縦横比を保って収め、余った高さは上下に均等に振り分ける（object-positionの既定＝中央）
+      className: "h-full w-full object-contain",
     },
-    // 白背景のPNGを、資産シミュレーター側の画像に写っているHeroDemoのカードと同じ値
-    // （lifecompass-next HeroDemo.tsx L156：bg-white rounded border border-slate-200 px-6 pt-6 pb-1）で包む
-    cardClass: "rounded border border-slate-200 bg-white px-6 pt-6 pb-1",
+    // 白背景のPNGを、資産シミュレーター側の画像に写っているHeroDemoのカードと同じ見た目
+    // （lifecompass-next HeroDemo.tsx L156：bg-white rounded border border-slate-200）で包む。
+    // カードの縦横比は資産シミュレーター側の画像（1040×850）と同じにして、01と02のカードの大きさを揃える。
+    // 余白は中の図を上下中央に置くため上下左右とも同じp-6（24px）にする。
+    cardClass: "aspect-[1040/850] rounded border border-slate-200 bg-white p-6",
   },
 ];
 
@@ -147,11 +150,8 @@ export default function Home() {
           </section>
 
           {/* 2本柱：縦に2ブロック積み、各ブロックは左テキスト・右図。800px未満は1列で、DOM順どおり
-              テキスト→図の順に並ぶ（読み上げ順とも一致）。左右は上下中央揃え（items-center）。
-              800px以上の図の列は「424px」と「コンテナの半分」の小さい方。広い画面ではテキスト6：図4になり、
-              図（特に中身を削れない資産シミュレーターの画面）を縮めて左右の高さの差を小さくする。424pxは、
-              資産シミュレーターの画面内の軸ラベル（元11px）が約9pxを保てる下限の幅。狭い画面では図が1：1の
-              ときより小さくならないよう、半分で頭打ちにする。
+              テキスト→図の順に並ぶ（読み上げ順とも一致）。800px以上は1：1で、テキストと図はどちらも上揃え。
+              800px以上の見出し→説明文・説明文→CTAの間隔は、01・02とも同じ48px（mt-12）の固定値。
               ラベル下の余白はLPのSectionHeading全体の下余白（mb-10）と同じ */}
           <section className="py-16">
             <SectionLabel className="mb-10">SERVICES</SectionLabel>
@@ -159,25 +159,27 @@ export default function Home() {
             {PILLARS.map((pillar) => (
               <div
                 key={pillar.no}
-                className="grid items-center gap-8 min-[800px]:grid-cols-[minmax(0,1fr)_min(26.5rem,50%)] min-[800px]:gap-12"
+                className="grid items-start gap-8 min-[800px]:grid-cols-2 min-[800px]:gap-12"
               >
                 <div>
-                  <p
-                    className="font-bold leading-none tracking-tight text-black"
-                    style={{ fontSize: "clamp(30px, 4vw, 40px)" }}
-                  >
-                    {pillar.no}
-                  </p>
-                  {/* 01/02の数字（clamp(30px, 4vw, 40px)）より常に一回り大きくし、数字に埋もれないようにする */}
-                  <h2 className="mt-3 text-[2rem] font-bold text-black sm:text-4xl lg:text-5xl">{pillar.title}</h2>
+                  <div>
+                    <p
+                      className="font-bold leading-none tracking-tight text-black"
+                      style={{ fontSize: "clamp(30px, 4vw, 40px)" }}
+                    >
+                      {pillar.no}
+                    </p>
+                    {/* 01/02の数字（clamp(30px, 4vw, 40px)）より常に一回り大きくし、数字に埋もれないようにする */}
+                    <h2 className="mt-3 text-[2rem] font-bold text-black sm:text-4xl lg:text-5xl">{pillar.title}</h2>
+                  </div>
                   {/* 文節ごとに<wbr />を入れ、keep-allでその位置だけで折り返させる（一人法人LPのPhraseBreakと同じ方式。
                       overflow-wrap:anywhereは長すぎる文節の保険） */}
-                  <p className="mt-4 text-base leading-relaxed text-zinc-700 [line-break:strict] [word-break:keep-all] [overflow-wrap:anywhere]">
+                  <p className="mt-4 min-[800px]:mt-12 text-base leading-relaxed text-zinc-700 [line-break:strict] [word-break:keep-all] [overflow-wrap:anywhere]">
                     <PhraseText phrases={pillar.lead} />
                     <br />
                     <PhraseText phrases={pillar.body} />
                   </p>
-                  <a href={pillar.href} className={`mt-6 ${pillar.ctaClass}`}>
+                  <a href={pillar.href} className={`mt-6 min-[800px]:mt-12 ${pillar.ctaClass}`}>
                     {pillar.cta}
                   </a>
                 </div>
@@ -187,7 +189,7 @@ export default function Home() {
                     width={pillar.image.width}
                     height={pillar.image.height}
                     alt={pillar.image.alt}
-                    className={`h-auto w-full ${pillar.image.className}`}
+                    className={pillar.image.className}
                   />
                 </div>
               </div>
