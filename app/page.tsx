@@ -148,6 +148,10 @@ export default function Home() {
 
           {/* 2本柱：縦に2ブロック積み、各ブロックは左テキスト・右図。800px未満は1列で、DOM順どおり
               テキスト→図の順に並ぶ（読み上げ順とも一致）。左右は上下中央揃え（items-center）。
+              800px以上の図の列は「424px」と「コンテナの半分」の小さい方。広い画面ではテキスト6：図4になり、
+              図（特に中身を削れない資産シミュレーターの画面）を縮めて左右の高さの差を小さくする。424pxは、
+              資産シミュレーターの画面内の軸ラベル（元11px）が約9pxを保てる下限の幅。狭い画面では図が1：1の
+              ときより小さくならないよう、半分で頭打ちにする。
               ラベル下の余白はLPのSectionHeading全体の下余白（mb-10）と同じ */}
           <section className="py-16">
             <SectionLabel className="mb-10">SERVICES</SectionLabel>
@@ -155,7 +159,7 @@ export default function Home() {
             {PILLARS.map((pillar) => (
               <div
                 key={pillar.no}
-                className="grid items-center gap-8 min-[800px]:grid-cols-2 min-[800px]:gap-12"
+                className="grid items-center gap-8 min-[800px]:grid-cols-[minmax(0,1fr)_min(26.5rem,50%)] min-[800px]:gap-12"
               >
                 <div>
                   <p
