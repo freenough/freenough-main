@@ -11,11 +11,12 @@ const HITORI_HOJIN_URL = "/hitori-hojin";
 // セカンダリ（アウトライン）はLP側に同種のボタンがないため、同じhover挙動に枠線を足したもの。
 // 枠線1px×2の分だけpy-[15px]にして、プライマリと同じ高さ56pxにする。
 // min-w-[19rem]（304px）は、文言の長い「一人法人という選択肢を見る →」（内容幅約295px）に合わせて
-// 4つのボタンの幅を揃えるための最小幅。375px幅の本文（327px）にも収まる。
+// 4つのボタンの幅を揃えるための最小幅。本文がそれより狭い幅（320px幅の本文288px）では本文幅を上限にする。
+// セカンダリは文言と左右余白px-8だけで約294pxあり320px幅の本文288pxより広いため、360px未満だけpx-6にして本文幅に収める。
 const PRIMARY_BUTTON_CLASS =
-  "inline-block min-w-[19rem] rounded bg-[#334155] px-8 py-4 text-center text-base font-semibold text-white shadow transition-all duration-150 ease-out whitespace-nowrap hover:-translate-y-0.5 hover:shadow-lg";
+  "inline-block min-w-[min(19rem,100%)] rounded bg-[#334155] px-8 py-4 text-center text-base font-semibold text-white shadow transition-all duration-150 ease-out whitespace-nowrap hover:-translate-y-0.5 hover:shadow-lg";
 const SECONDARY_BUTTON_CLASS =
-  "inline-block min-w-[19rem] rounded border border-[#334155] bg-transparent px-8 py-[15px] text-center text-base font-semibold text-[#334155] shadow transition-all duration-150 ease-out whitespace-nowrap hover:-translate-y-0.5 hover:shadow-lg";
+  "inline-block min-w-[min(19rem,100%)] rounded border border-[#334155] bg-transparent px-8 max-[359px]:px-6 py-[15px] text-center text-base font-semibold text-[#334155] shadow transition-all duration-150 ease-out whitespace-nowrap hover:-translate-y-0.5 hover:shadow-lg";
 
 // 2本柱ブロックの右側の図は、lifecompass-nextのLPに実際に描画されたHeroDemo・HitoriHojinForkDiagramを
 // 2倍解像度でキャプチャした静止画（別リポジトリのためコンポーネントは共有できない）。
@@ -97,8 +98,9 @@ export default function Home() {
       <Header />
 
       <main className="flex flex-col items-center">
-        {/* 外側コンテナはlifecompass-nextの--lp-container-width(72rem)に合わせる */}
-        <div className="mx-auto w-full max-w-[72rem] px-6">
+        {/* 外側コンテナはlifecompass-nextの--lp-container-width(72rem)に合わせる。
+            左右の余白は800px未満でヘッダー・フッター（px-4）と同じ16px、800px以上は24px */}
+        <div className="mx-auto w-full max-w-[72rem] px-4 min-[800px]:px-6">
           <section className="pt-28 pb-16 text-center">
             {/* 見出しの文字サイズをこの要素の幅（cqi）基準にするためのコンテナ。vwはスクロールバーを含む
                 画面幅で決まり、スクロールバーが幅を取る環境で本文幅とずれるため使わない */}
@@ -111,11 +113,12 @@ export default function Home() {
                   上限4.5rem（72px）は、1440px幅で1行目が本文コンテナ（1152px）の90%以上になる大きさ。
                   中央値6.6cqiは、1行目（文字サイズの約14.6倍の幅）がコンテナ幅の約96.5%に収まり、
                   15px以上の余りを残して2行になるように決めた値。
-                  下限2.5rem（40px）は、最も長い塊「あなたにとっての」（文字サイズの約7.8倍＝312px）が
-                  375px・360px幅の本文（327px・312px）に収まる最大の大きさ */}
+                  下限2.5rem（40px）は、最も長い塊「あなたにとっての」（文字サイズの約7.7倍＝309px）が
+                  360px幅の本文（328px）に収まる大きさ。360px未満だけ下限を37pxに下げる（320px幅の本文288pxに
+                  286pxで収まる、1px刻みで最大の大きさ）。下限は--h1-minで切り替える */}
               <h1
-                className="mt-4 text-balance font-bold leading-tight tracking-tight text-black"
-                style={{ fontSize: "clamp(2.5rem, 6.6cqi, 4.5rem)" }}
+                className="mt-4 text-balance font-bold leading-tight tracking-tight text-black [--h1-min:2.5rem] max-[359px]:[--h1-min:37px]"
+                style={{ fontSize: "clamp(var(--h1-min), 6.6cqi, 4.5rem)" }}
               >
                 <span className="whitespace-nowrap">あなたにとっての</span><span className="whitespace-nowrap">「足りる」を、</span>
                 <br />
@@ -137,8 +140,9 @@ export default function Home() {
 
           {/* 帯の背景はbox-shadowで画面幅いっぱいに広げ、clip-pathで上下のはみ出しだけ切る
               （w-screen=100vwはWindowsのスクロールバー幅を含み横スクロールを生むため使わない）。
-              SERVICESと同じ左揃え。本文は読みやすい行長（1行42字前後）に収めるためmax-w-2xlのまま */}
-          <section className="-mx-6 bg-slate-50 px-6 py-9 shadow-[0_0_0_100vmax_var(--color-slate-50)] [clip-path:inset(0_-100vmax)]">
+              SERVICESと同じ左揃え。本文は読みやすい行長（1行42字前後）に収めるためmax-w-2xlのまま。
+              -mx-*とpx-*は外側コンテナの左右余白（800px未満16px・以上24px）と同じ値で相殺して付け直す */}
+          <section className="-mx-4 bg-slate-50 px-4 py-9 min-[800px]:-mx-6 min-[800px]:px-6 shadow-[0_0_0_100vmax_var(--color-slate-50)] [clip-path:inset(0_-100vmax)]">
             <Reveal className="flex max-w-2xl flex-col gap-4 text-base leading-relaxed text-zinc-700">
               <SectionLabel>MESSAGE</SectionLabel>
               {/* 2本柱の説明文と同じく、文節ごとの<wbr />＋keep-allで文節の区切りでだけ折り返す */}
