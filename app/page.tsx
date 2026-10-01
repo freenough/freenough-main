@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import Image from "next/image";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Reveal from "./components/Reveal";
 
 const ASSET_SIMULATOR_URL = "/asset-simulator";
 const HITORI_HOJIN_URL = "/hitori-hojin";
@@ -138,7 +139,7 @@ export default function Home() {
               （w-screen=100vwはWindowsのスクロールバー幅を含み横スクロールを生むため使わない）。
               SERVICESと同じ左揃え。本文は読みやすい行長（1行42字前後）に収めるためmax-w-2xlのまま */}
           <section className="-mx-6 bg-slate-50 px-6 py-9 shadow-[0_0_0_100vmax_var(--color-slate-50)] [clip-path:inset(0_-100vmax)]">
-            <div className="flex max-w-2xl flex-col gap-4 text-base leading-relaxed text-zinc-700">
+            <Reveal className="flex max-w-2xl flex-col gap-4 text-base leading-relaxed text-zinc-700">
               <SectionLabel>MESSAGE</SectionLabel>
               {/* 2本柱の説明文と同じく、文節ごとの<wbr />＋keep-allで文節の区切りでだけ折り返す */}
               {MESSAGE_PARAGRAPHS.map((phrases, i) => (
@@ -146,7 +147,7 @@ export default function Home() {
                   <PhraseText phrases={phrases} />
                 </p>
               ))}
-            </div>
+            </Reveal>
           </section>
 
           {/* 2本柱：縦に2ブロック積み、各ブロックは左テキスト・右図。800px未満は1列で、DOM順どおり
@@ -154,14 +155,16 @@ export default function Home() {
               800px以上の見出し→説明文・説明文→CTAの間隔は、01・02とも同じ48px（mt-12）の固定値。
               ラベル下の余白はLPのSectionHeading全体の下余白（mb-10）と同じ */}
           <section className="py-16">
-            <SectionLabel className="mb-10">SERVICES</SectionLabel>
+            <Reveal className="mb-10">
+              <SectionLabel>SERVICES</SectionLabel>
+            </Reveal>
             <div className="space-y-10 sm:space-y-12">
             {PILLARS.map((pillar) => (
               <div
                 key={pillar.no}
                 className="grid items-start gap-8 min-[800px]:grid-cols-2 min-[800px]:gap-12"
               >
-                <div>
+                <Reveal>
                   <div>
                     <p
                       className="font-bold leading-none tracking-tight text-black"
@@ -182,8 +185,8 @@ export default function Home() {
                   <a href={pillar.href} className={`mt-6 min-[800px]:mt-12 ${pillar.ctaClass}`}>
                     {pillar.cta}
                   </a>
-                </div>
-                <div className={`mx-auto w-full max-w-[520px] ${pillar.cardClass}`}>
+                </Reveal>
+                <Reveal className={`mx-auto w-full max-w-[520px] ${pillar.cardClass}`}>
                   <Image
                     src={pillar.image.src}
                     width={pillar.image.width}
@@ -191,7 +194,7 @@ export default function Home() {
                     alt={pillar.image.alt}
                     className={pillar.image.className}
                   />
-                </div>
+                </Reveal>
               </div>
             ))}
             </div>

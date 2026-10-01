@@ -33,6 +33,11 @@ const organizationJsonLd = {
   sameAs: ["https://x.com/freenough", "https://note.com/freenough"],
 };
 
+// スクロール表示演出（app/components/Reveal.tsx）の初期化スクリプト。lifecompass-nextと同じ内容
+const REVEAL_BOOT_SCRIPT =
+  "(function(){var d=document.documentElement;d.classList.add('js-reveal');" +
+  "setTimeout(function(){if(!window.__rvReady&&document.querySelector('.rv'))d.classList.remove('js-reveal');},4000);})();";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -42,8 +47,14 @@ export default function RootLayout({
     <html
       lang="ja"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      suppressHydrationWarning
     >
       <body className="bg-slate-50">
+        {/* スクロール表示演出の初期化。HTML解析中に<html>へjs-revealを付け、初期表示のちらつきを防ぐ。
+            JS無効・ハイドレーション失敗時に内容が非表示のまま残らないよう、非表示はjs-revealがあるときだけ効かせ、
+            4秒後に.rvがあるのにRevealが動作開始していなければjs-revealを外す（.rvのないページでは外さない）。
+            クラスをスクリプトで足すため<html>にsuppressHydrationWarningを付けている */}
+        <script dangerouslySetInnerHTML={{ __html: REVEAL_BOOT_SCRIPT }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
