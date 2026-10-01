@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Noto_Sans_JP, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import AnalyticsScripts from "@/app/components/AnalyticsScripts";
 import { ADSENSE_CLIENT_ID, IS_PRODUCTION_BUILD } from "@/app/lib/analytics";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// 本文の書体。lifecompass-next（資産シミュレーター・一人法人LP）のlayout.tsxと同じ設定。
+// 太さはLPと同じ400・500・700の3つだけ読み込む（font-semibold・font-extraboldはLPと同じく700で描かれる）
+const notoSansJP = Noto_Sans_JP({
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -46,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="ja"
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      className={`${notoSansJP.className} ${geistMono.variable} antialiased`}
       suppressHydrationWarning
     >
       <body className="bg-slate-50">
